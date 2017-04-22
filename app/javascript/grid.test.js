@@ -343,7 +343,7 @@ describe('BlockGrid', () => {
       blockGrid.updateGrid(blocks);
 
       const targetMoved = new Block(1, 2);
-      targetMoved.colour = 'white';
+      targetMoved.colour = 'transparent';
       const neighbourMoved = new Block(1, 1);
       neighbourMoved.colour = 'red';
 
@@ -379,7 +379,7 @@ describe('BlockGrid', () => {
       blockGrid.updateGrid(blocks);
 
       const targetMoved = new Block(1, 2);
-      targetMoved.colour = 'white';
+      targetMoved.colour = 'transparent';
 
       const neighbourMoved = new Block(1, 0);
       neighbourMoved.colour = 'red';

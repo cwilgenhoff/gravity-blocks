@@ -144,7 +144,7 @@ export class BlockGrid {
 
   hideBlock(block) {
     if (block) {
-      block.colour = 'white';
+      block.colour = 'transparent';
     }
   }
 }
