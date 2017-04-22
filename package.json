@@ -1,0 +1,33 @@
+{
+  "name": "front-end-dev-test",
+  "version": "0.0.1",
+  "description": "A blocky puzzle for software engineers.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server --open",
+    "test": "mocha --require babel-polyfill --compilers js:babel-register,jsdom-global/register 'app/**/*.test.js'",
+    "test:watch": "yarn test -- --watch",
+    "prettier": "prettier --single-quote --write 'app/**/*.js'"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.3.3",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "chai": "^3.4.1",
+    "css-loader": "^0.28.0",
+    "jsdom": "^9.12.0",
+    "jsdom-global": "^2.1.1",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.3",
+    "mocha": "^3.2.0",
+    "prettier": "^0.22.0",
+    "style-loader": "^0.16.1",
+    "webpack": "^2.3.3",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "license": "UNLICENSED"
+}
