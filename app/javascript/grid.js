@@ -15,7 +15,7 @@ export class BlockGrid {
     this.grid = [];
 
     for (let x = 0; x < MAX_X; x++) {
-      let col = [];
+      const col = [];
       for (let y = 0; y < MAX_Y; y++) {
         col.push(new Block(x, y));
       }
@@ -28,18 +28,18 @@ export class BlockGrid {
 
   render(el = document.querySelector('#gridEl')) {
     for (let x = 0; x < MAX_X; x++) {
-      let id = 'col_' + x;
-      let colEl = document.createElement('div');
+      const colId = `col_${x}`;
+      const colEl = document.createElement('div');
       colEl.className = 'col';
-      colEl.id = id;
+      colEl.id = colId;
       el.appendChild(colEl);
 
       for (let y = MAX_Y - 1; y >= 0; y--) {
-        let block = this.grid[x][y],
-          id = `block_${x}x${y}`,
-          blockEl = document.createElement('div');
+        const block = this.grid[x][y];
+        const blockId = `block_${x}x${y}`;
+        const blockEl = document.createElement('div');
 
-        blockEl.id = id;
+        blockEl.id = blockId;
         blockEl.className = 'block';
         blockEl.style.background = block.colour;
         blockEl.addEventListener('click', evt => this.blockClicked(evt, block));
