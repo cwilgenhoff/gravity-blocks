@@ -1,4 +1,10 @@
-# Blocky Puzzle
+<h1 align="center">Gravity Blocks</h1>
+
+[![Build Status](https://travis-ci.org/cwilgenhoff/gravity-blocks.svg?branch=master)](https://travis-ci.org/cwilgenhoff/gravity-blocks)
+
+Experience the gravity of the blocks.
+
+![http://i.imgur.com/zWIs12u.png](http://i.imgur.com/zWIs12u.png)
 
 ## To get started
 
