@@ -69,11 +69,36 @@ export class BlockGrid {
 
     const blocks = [];
     this.findBlocks(block, blocks);
-    console.log(blocks);
+    this.updateGrid(blocks);
+    this.reset();
+    this.render();
+  }
+
+  updateGrid(blocks) {
+    if (!blocks.length) {
+      return;
+    }
+
+    blocks.forEach(block => {
+      this.hideBlock(block);
+
+      const col = this.grid[block.x];
+      this.grid[block.x] = col.slice(block.y);
+      this.grid[block.x] = [
+        ...col.slice(0, block.y),
+        ...col.slice(block.y + 1),
+        block,
+      ];
+      this.grid[block.x].forEach((movedBlock, index) => {
+        if (movedBlock) {
+          movedBlock.y = index;
+        }
+      });
+    });
   }
 
   findBlocks(block, blocks) {
-    if (!block) {
+    if (!this.isValidBlock(block)) {
       return false;
     }
 
@@ -107,6 +132,20 @@ export class BlockGrid {
 
   isEqualBlock(leftBlock, rightBlock) {
     return leftBlock && rightBlock && leftBlock.colour === rightBlock.colour;
+  }
+
+  isValidBlock(block) {
+    if (!block) {
+      return false;
+    }
+
+    return COLOURS.indexOf(block.colour) > -1;
+  }
+
+  hideBlock(block) {
+    if (block) {
+      block.colour = 'white';
+    }
   }
 }
 

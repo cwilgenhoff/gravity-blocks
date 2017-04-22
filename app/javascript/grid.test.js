@@ -1,5 +1,5 @@
-import { assert } from 'chai';
-import { Block, BlockGrid, COLOURS } from './grid';
+import {assert} from 'chai';
+import {Block, BlockGrid, COLOURS} from './grid';
 
 describe('Block', () => {
   it('should be created with correct coordinates and one of the valid colours', () => {
@@ -37,10 +37,6 @@ describe('BlockGrid', () => {
     blockGrid.grid.forEach(column => assert.equal(column.length, 3));
   });
 
-  describe('blockClicked', () => {
-
-  });
-
   describe('findBlocks', () => {
     let target;
     let neighbour;
@@ -63,10 +59,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 2);
-      blocks.forEach(block => {
-        assert.equal(block.colour, 'blue');
-      });
+      const resultBlocks = [target, neighbour];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find only the given block (no top left)', () => {
@@ -87,7 +81,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 1);
+      const resultBlocks = [target];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find all blocks including the one on the top', () => {
@@ -108,10 +103,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 2);
-      blocks.forEach(block => {
-        assert.equal(block.colour, 'blue');
-      });
+      const resultBlocks = [target, neighbour];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find only the given block (no top right)', () => {
@@ -132,7 +125,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 1);
+      const resultBlocks = [target];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find all blocks including the one on the right', () => {
@@ -153,7 +147,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 2);
+      const resultBlocks = [target, neighbour];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find only the given block (no bottom right)', () => {
@@ -174,7 +169,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 1);
+      const resultBlocks = [target];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find all blocks including the one on the bottom', () => {
@@ -195,7 +191,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 2);
+      const resultBlocks = [target, neighbour];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find only the given block (no bottom left)', () => {
@@ -216,7 +213,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 1);
+      const resultBlocks = [target];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find all blocks including the two on the left', () => {
@@ -240,7 +238,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 3);
+      const resultBlocks = [target, neighbour, secondNeighbour];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find all blocks including the two on the right', () => {
@@ -264,7 +263,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 3);
+      const resultBlocks = [target, neighbour, secondNeighbour];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find all blocks including the two on the top', () => {
@@ -288,7 +288,8 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 3);
+      const resultBlocks = [target, neighbour, secondNeighbour];
+      assert.deepEqual(blocks, resultBlocks);
     });
 
     it('should find all blocks including the two on the bottom', () => {
@@ -312,7 +313,86 @@ describe('BlockGrid', () => {
       const blocks = [];
       blockGrid.findBlocks(target, blocks);
 
-      assert.equal(blocks.length, 3);
+      const resultBlocks = [target, neighbour, secondNeighbour];
+      assert.deepEqual(blocks, resultBlocks);
+    });
+  });
+
+  describe('updateGrid', () => {
+    let target;
+    let neighbour;
+
+    it('should move block on top of block clicked down', () => {
+      blockGrid = new BlockGrid({ width: 3, height: 3 });
+
+      target = new Block(1, 1);
+      target.colour = 'blue';
+
+      neighbour = new Block(1, 2);
+      neighbour.colour = 'red';
+
+      blockGrid.grid = [
+        [null, null, null],
+        [null, target, neighbour],
+        [null, null, null],
+      ];
+
+      const blocks = [
+        target,
+      ];
+      blockGrid.updateGrid(blocks);
+
+      const targetMoved = new Block(1, 2);
+      targetMoved.colour = 'white';
+      const neighbourMoved = new Block(1, 1);
+      neighbourMoved.colour = 'red';
+
+      const result = [
+        [null, null, null],
+        [null, neighbourMoved, targetMoved],
+        [null, null, null],
+      ];
+      assert.deepEqual(blockGrid.grid, result);
+    });
+
+    it('should move the two blocks on top of block clicked down', () => {
+      blockGrid = new BlockGrid({ width: 3, height: 3 });
+
+      target = new Block(1, 0);
+      target.colour = 'blue';
+
+      neighbour = new Block(1, 1);
+      neighbour.colour = 'red';
+
+      const secondNeighbour = new Block(1, 2);
+      secondNeighbour.colour = 'yellow';
+
+      blockGrid.grid = [
+        [null, null, null],
+        [target, neighbour, secondNeighbour],
+        [null, null, null],
+      ];
+
+      const blocks = [
+        target,
+      ];
+      blockGrid.updateGrid(blocks);
+
+      const targetMoved = new Block(1, 2);
+      targetMoved.colour = 'white';
+
+      const neighbourMoved = new Block(1, 0);
+      neighbourMoved.colour = 'red';
+
+      const secondNeighbourMoved = new Block(1, 1);
+      secondNeighbourMoved.colour = 'yellow';
+
+      const result = [
+        [null, null, null],
+        [neighbourMoved, secondNeighbourMoved, targetMoved],
+        [null, null, null],
+      ];
+      assert.deepEqual(blockGrid.grid, result);
     });
   });
 });
