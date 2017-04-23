@@ -1,5 +1,5 @@
-import {assert} from 'chai';
-import {Block, BlockGrid, COLOURS} from './grid';
+import { assert } from 'chai';
+import { Block, BlockGrid, COLOURS } from './grid';
 
 describe('Block', () => {
   it('should be created with correct coordinates and one of the valid colours', () => {

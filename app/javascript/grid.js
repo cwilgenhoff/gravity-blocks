@@ -128,7 +128,7 @@ export class BlockGrid {
       }
     });
 
-    return blocks;
+    return true;
   }
 
   getBlockFromGrid(x, y) {
