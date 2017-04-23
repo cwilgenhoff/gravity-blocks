@@ -361,15 +361,15 @@ describe('BlockGrid', () => {
       target = new Block(1, 0);
       target.colour = 'blue';
 
-      neighbour = new Block(1, 1);
-      neighbour.colour = 'red';
+      const redBlock = new Block(1, 1);
+      redBlock.colour = 'red';
 
-      const secondNeighbour = new Block(1, 2);
-      secondNeighbour.colour = 'yellow';
+      const yellowBlock = new Block(1, 2);
+      yellowBlock.colour = 'yellow';
 
       blockGrid.grid = [
         [null, null, null],
-        [target, neighbour, secondNeighbour],
+        [target, redBlock, yellowBlock],
         [null, null, null],
       ];
 
@@ -381,15 +381,70 @@ describe('BlockGrid', () => {
       const targetMoved = new Block(1, 2);
       targetMoved.colour = 'transparent';
 
-      const neighbourMoved = new Block(1, 0);
-      neighbourMoved.colour = 'red';
+      const redBlockMoved = new Block(1, 0);
+      redBlockMoved.colour = 'red';
 
-      const secondNeighbourMoved = new Block(1, 1);
-      secondNeighbourMoved.colour = 'yellow';
+      const yellowBlockMoved = new Block(1, 1);
+      yellowBlockMoved.colour = 'yellow';
 
       const result = [
         [null, null, null],
-        [neighbourMoved, secondNeighbourMoved, targetMoved],
+        [redBlockMoved, yellowBlockMoved, targetMoved],
+        [null, null, null],
+      ];
+      assert.deepEqual(blockGrid.grid, result);
+    });
+
+    it('should move all the other blocks on top of block clicked down', () => {
+      blockGrid = new BlockGrid({ width: 3, height: 3 });
+
+      target = new Block(0, 0);
+      target.colour = 'blue';
+
+      neighbour = new Block(1, 0);
+      neighbour.colour = 'blue';
+
+      const secondNeighbour = new Block(1, 1);
+      secondNeighbour.colour = 'blue';
+
+      const yellowBlock = new Block(0, 1);
+      yellowBlock.colour = 'yellow';
+
+      const redBlock = new Block(1, 2);
+      redBlock.colour = 'red';
+
+
+      blockGrid.grid = [
+        [target, yellowBlock, null],
+        [neighbour, secondNeighbour, redBlock],
+        [null, null, null],
+      ];
+
+      const blocks = [
+        target,
+        neighbour,
+        secondNeighbour,
+      ];
+      blockGrid.updateGrid(blocks);
+
+      const targetMoved = new Block(0, 2);
+      targetMoved.colour = 'transparent';
+
+      const neighbourMoved = new Block(1, 1);
+      neighbourMoved.colour = 'transparent';
+
+      const secondNeighbourMoved = new Block(1, 2);
+      secondNeighbourMoved.colour = 'transparent';
+
+      const yellowBlockMoved = new Block(0, 0);
+      yellowBlockMoved.colour = 'yellow';
+
+      const redBlockMoved = new Block(1, 0);
+      redBlockMoved.colour = 'red';
+
+      const result = [
+        [yellowBlockMoved, null, targetMoved],
+        [redBlockMoved, neighbourMoved, secondNeighbourMoved],
         [null, null, null],
       ];
       assert.deepEqual(blockGrid.grid, result);
