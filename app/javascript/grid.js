@@ -59,18 +59,25 @@ export class BlockGrid {
     return this;
   }
 
-  reset() {
+  static reset() {
     const el = document.querySelector('#gridEl');
     el.innerHTML = '';
   }
 
   blockClicked(e, block) {
-    e.preventDefault();
+    if (e.preventDefault) {
+      e.preventDefault();
+    }
 
     const blocks = [];
     this.findBlocks(block, blocks);
+
+    if (!blocks.length) {
+      return;
+    }
+
     this.updateGrid(blocks);
-    this.reset();
+    BlockGrid.reset();
     this.render();
   }
 
@@ -80,15 +87,15 @@ export class BlockGrid {
     }
 
     blocks.forEach(block => {
-      this.hideBlock(block);
+      BlockGrid.hideBlock(block);
 
       const col = this.grid[block.x];
-      this.grid[block.x] = col.slice(block.y);
       this.grid[block.x] = [
         ...col.slice(0, block.y),
         ...col.slice(block.y + 1),
         block,
       ];
+
       this.grid[block.x].forEach((movedBlock, index) => {
         if (movedBlock) {
           movedBlock.y = index;
@@ -98,7 +105,7 @@ export class BlockGrid {
   }
 
   findBlocks(block, blocks) {
-    if (!this.isValidBlock(block)) {
+    if (!BlockGrid.isValidBlock(block)) {
       return false;
     }
 
@@ -109,14 +116,14 @@ export class BlockGrid {
     blocks.push(block);
 
     const searchPath = [
-      this.getFromGrid(block.x - 1, block.y),
-      this.getFromGrid(block.x, block.y + 1),
-      this.getFromGrid(block.x + 1, block.y),
-      this.getFromGrid(block.x, block.y - 1),
+      this.getBlockFromGrid(block.x - 1, block.y),
+      this.getBlockFromGrid(block.x, block.y + 1),
+      this.getBlockFromGrid(block.x + 1, block.y),
+      this.getBlockFromGrid(block.x, block.y - 1),
     ];
 
     searchPath.forEach(target => {
-      if (target && this.isEqualBlock(block, target)) {
+      if (target && BlockGrid.isEqualBlock(block, target)) {
         this.findBlocks(target, blocks);
       }
     });
@@ -124,17 +131,19 @@ export class BlockGrid {
     return blocks;
   }
 
-  getFromGrid(x, y) {
-    if (this.grid[x] && this.grid[x][y]) {
-      return this.grid[x][y];
+  getBlockFromGrid(x, y) {
+    if (!this.grid[x] || !this.grid[x][y]) {
+      return undefined;
     }
+
+    return this.grid[x][y];
   }
 
-  isEqualBlock(leftBlock, rightBlock) {
+  static isEqualBlock(leftBlock, rightBlock) {
     return leftBlock && rightBlock && leftBlock.colour === rightBlock.colour;
   }
 
-  isValidBlock(block) {
+  static isValidBlock(block) {
     if (!block) {
       return false;
     }
@@ -142,7 +151,7 @@ export class BlockGrid {
     return COLOURS.indexOf(block.colour) > -1;
   }
 
-  hideBlock(block) {
+  static hideBlock(block) {
     if (block) {
       block.colour = 'transparent';
     }
